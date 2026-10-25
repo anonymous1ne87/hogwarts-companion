@@ -20,6 +20,14 @@
   --sea: #070b17;
   --road: #283863;
   --scrim: rgba(10, 15, 30, 0.86);
+  --gryffindor: #e0705c;
+  --gryffindor-bg: #3a1f22;
+  --slytherin: #5cc49a;
+  --slytherin-bg: #16302a;
+  --ravenclaw: #6f9be6;
+  --ravenclaw-bg: #1a2744;
+  --hufflepuff: #e6c15c;
+  --hufflepuff-bg: #352d17;
   --f-display: "IM Fell English SC", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --f-body: "Alegreya Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   color-scheme: dark;
@@ -62,10 +70,43 @@ button { font: inherit; color: inherit; }
 .small-h { font-size: 1rem !important; }
 
 .char { grid-template-columns: 52px minmax(0, 1fr); align-items: start; gap: 14px; }
+.char.connected { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.char-head { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 14px; align-items: center; }
 .crest { width: 52px; height: 60px; }
 .crest path { fill: var(--panel-2); stroke: var(--ink-3); stroke-width: 2; stroke-dasharray: 4 3; }
 .crest text { fill: var(--ink-3); font-family: var(--f-display); font-size: 18px; }
-.char-body { display: grid; gap: 4px; }
+.crest[class*="house-"] path { stroke-dasharray: none; stroke-width: 2.5; }
+.crest[class*="house-"] text { fill: var(--ink); }
+.crest.house-gryffindor path { fill: var(--gryffindor-bg); stroke: var(--gryffindor); }
+.crest.house-slytherin path { fill: var(--slytherin-bg); stroke: var(--slytherin); }
+.crest.house-ravenclaw path { fill: var(--ravenclaw-bg); stroke: var(--ravenclaw); }
+.crest.house-hufflepuff path { fill: var(--hufflepuff-bg); stroke: var(--hufflepuff); }
+.char-body { display: grid; gap: 4px; min-width: 0; }
+.char-body h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.55rem; line-height: 1.1; }
+.char-meta { margin: 0; display: flex; flex-wrap: wrap; gap: 2px 12px; color: var(--ink-2); font-size: 0.86rem; }
+.char-meta sup { font-size: 0.62rem; margin-left: 2px; color: var(--ink-3); }
+.char-facts { margin: 0; display: grid; gap: 4px; font-size: 0.88rem; }
+.char-facts div { display: grid; grid-template-columns: 4.2em minmax(0, 1fr); gap: 8px; }
+.char-facts dt { color: var(--ink-3); }
+.char-facts dd { margin: 0; color: var(--ink-2); }
+.num-tab { font-variant-numeric: tabular-nums; }
+.mini-h { margin: 6px 0 0; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--ink-3); }
+.gear { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.gear li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; padding: 7px 9px; border-radius: 9px; background: var(--panel-2); box-shadow: inset 3px 0 0 var(--rar, var(--ink-3)); font-size: 0.82rem; }
+.gear .g-slot { font-weight: 700; }
+.gear .g-lvl { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gear .g-rar { color: var(--rar, var(--ink-3)); font-size: 0.74rem; font-weight: 700; }
+.gear .g-stats { grid-column: 1 / -1; color: var(--ink-3); font-size: 0.76rem; font-variant-numeric: tabular-nums; }
+.gear .rar-legendary { --rar: var(--lock1); }
+.gear .rar-epic { --rar: var(--lock2); }
+.gear .rar-rare, .gear .rar-superior { --rar: var(--moon); }
+.char-status { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.char-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.char-pick { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--ink-3); }
+.char-pick select { font: inherit; color: var(--ink); background: var(--night); border: 0; border-radius: 8px; padding: 6px 8px; box-shadow: inset 0 0 0 1px var(--rule); }
+.char-error { margin: 0; color: #ff9d8a; font-size: 0.86rem; }
+.path-hint { margin: 4px 0 0; font-size: 0.8rem; color: var(--ink-3); }
+.path-hint code { font-size: 0.78rem; color: var(--ink-2); background: var(--night); padding: 1px 5px; border-radius: 5px; margin-right: 6px; overflow-wrap: anywhere; }
 
 .next { background: radial-gradient(120% 160% at 0% 0%, rgba(169, 221, 255, 0.13), transparent 55%), var(--panel); }
 .next h2 { font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; }

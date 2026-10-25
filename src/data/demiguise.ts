@@ -90,10 +90,55 @@ const RAW: Raw[] = [
     directions: "Back to Faculty Tower. Thirteen more moons (22 in total) gets you Alohomora III. Afterwards Gladwin gets in touch and sends you to Piers Pemberton in Hogsmeade to finish The Man Behind the Moons." },
 ];
 
+/**
+ * How each statue appears in a save's MapLocationDataDynamic table (KO_Demiguise_... IDs).
+ * Highlands IDs carry the town's grid cell; castle and Hogsmeade IDs only carry world X/Y.
+ * Matched against real saves: the 9 Lock I statues of legs 1–2 were the 9 marked collected.
+ */
+const SAVE_MATCH: Record<string, RouteItem["saveMatch"]> = {
+  "lower-hogsfield": { grid: "HN_BG" },
+  aranshire: { grid: "HN_BD" },
+  "upper-hogsfield": { grid: "HN_AS" },
+  pitt: { grid: "HN_AK" },
+  brocburrow: { grid: "HN_BJ" },
+  keenbridge: { grid: "HS_AR" },
+  irondale: { grid: "HS_AY" },
+  feldcroft: { grid: "HS_AW" },
+  marunweem: { grid: "CO_AT" },
+  bainburgh: { grid: "CO_BB" },
+  cragcroft: { grid: "CO_BD" },
+  "north-exit": { x: 342818, y: -476545 },
+  restricted: { x: 352799, y: -469385 },
+  divination: { x: 359546, y: -467426 },
+  "muggle-studies": { x: 348904, y: -464308 },
+  "fig-office": { x: 346503, y: -458986 },
+  "great-hall": { x: 366609, y: -449613 },
+  "haunted-toilets": { x: 354065, y: -451176 },
+  "dada-tower": { x: 348926, y: -459383 },
+  beasts: { x: 337793, y: -457506 },
+  "long-gallery": { x: 354128, y: -465200 },
+  "hogs-head": { x: 380838, y: -514079 },
+  "pippins-house": { x: 384502, y: -518858 },
+  tomes: { x: 385643, y: -509093 },
+  "hogs-head-st": { x: 385916, y: -512203 },
+  "three-broomsticks": { x: 390369, y: -515774 },
+  dervish: { x: 391848, y: -520151 },
+  "east-of-broomsticks": { x: 391966, y: -515401 },
+  "bridge-house": { x: 395260, y: -524235 },
+  "east-hill": { x: 401854, y: -520187 },
+};
+
 export const DEMIGUISE_ROUTE: RouteItem[] = RAW.map(({ slug, kind, ...rest }) => ({
   ...rest,
   id: `demiguise/${slug}`,
   category: "demiguise",
   kind: kind ?? "collect",
   phase: DEMIGUISE_LEGS[rest.leg].phase,
+  saveMatch: SAVE_MATCH[slug],
 }));
+
+/** Alohomora level each Gladwin turn-in gives; a save at that level means the turn-in is done. */
+export const TURNIN_SPELL_LEVEL: Record<string, number> = {
+  "demiguise/turnin-1": 2,
+  "demiguise/turnin-2": 3,
+};

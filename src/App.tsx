@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MapId } from "./types";
 import { DEMIGUISE_LEGS, DEMIGUISE_ROUTE } from "./data/demiguise";
 import { useProgress } from "./state/progress";
+import { useSave } from "./state/save";
+import { routeDoneInSave } from "./save/match";
 import { MapView } from "./map/MapView";
 import { CharacterCard } from "./components/CharacterCard";
 import { Overview } from "./components/Overview";
@@ -12,13 +14,31 @@ import { DataTools } from "./components/DataTools";
 const isWide = () => window.matchMedia("(min-width: 960px)").matches;
 
 export default function App() {
-  const { progress, toggle, setNote, replace, resetTicks } = useProgress();
+  const { progress, toggle, setNote, markDone, replace, resetTicks } = useProgress();
+  const save = useSave();
   const route = DEMIGUISE_ROUTE;
   const next = route.find((r) => !progress.done[r.id]) ?? null;
 
   const [mapId, setMapId] = useState<MapId>(() => next?.map ?? "highlands");
   const [selectedId, setSelectedId] = useState<string | null>(() => next?.id ?? null);
   const mapRef = useRef<HTMLDivElement>(null);
+
+  // Auto-tick whatever the save says is done, then move the selection on if it was just ticked.
+  useEffect(() => {
+    if (!save.summary) return;
+    const ids = routeDoneInSave(route, save.summary);
+    const fresh = ids.filter((id) => !progress.done[id]);
+    if (!fresh.length) return;
+    markDone(fresh);
+    if (selectedId && fresh.includes(selectedId)) {
+      const after = route.find((r) => !progress.done[r.id] && !ids.includes(r.id));
+      if (after) {
+        setSelectedId(after.id);
+        setMapId(after.map);
+      }
+    }
+    // Runs only when a new save summary arrives, not on every tick.
+  }, [save.summary]);
 
   const collected = route.filter((r) => r.kind === "collect" && progress.done[r.id]).length;
   const total = route.filter((r) => r.kind === "collect").length;
@@ -77,9 +97,9 @@ export default function App() {
           />
         </div>
         <aside className="panel" aria-label="Character and route">
-          <CharacterCard />
+          <CharacterCard save={save} />
           <NextStop route={route} progress={progress} onDone={markNextDone} onShow={showOnMap} />
-          <Overview route={route} progress={progress} />
+          <Overview route={route} progress={progress} save={save.summary} />
           <RouteLedger
             title="Demiguise statue route"
             legs={DEMIGUISE_LEGS}

@@ -62,8 +62,18 @@ export function useProgress() {
     });
   }, []);
 
+  /** Tick several items at once (used for items the save says are done). Never unticks. */
+  const markDone = useCallback((ids: string[]) => {
+    setProgress((p) => {
+      if (ids.every((id) => p.done[id])) return p;
+      const done = { ...p.done };
+      for (const id of ids) done[id] = true;
+      return { ...p, done };
+    });
+  }, []);
+
   const replace = useCallback((next: Progress) => setProgress(next), []);
   const resetTicks = useCallback(() => setProgress((p) => ({ ...p, done: {} })), []);
 
-  return { progress, toggle, setNote, replace, resetTicks };
+  return { progress, toggle, setNote, markDone, replace, resetTicks };
 }

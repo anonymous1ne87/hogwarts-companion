@@ -49,6 +49,11 @@ export interface RouteItem {
   labelSide?: LabelSide;
   /** Override the curve of the route line arriving at this stop. */
   bendIn?: number;
+  /**
+   * How to find this stop in a save file: the grid cell in its map-location ID (Highlands),
+   * or its world X/Y (castle and Hogsmeade, where IDs have no grid cell).
+   */
+  saveMatch?: { grid: string } | { x: number; y: number };
 }
 
 export interface Leg {
