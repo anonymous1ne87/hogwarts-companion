@@ -205,8 +205,9 @@ export function MapView({ mapId, onMapChange, route, progress, selectedId, nextI
           </SVGOverlay>
         </Pane>
 
+        {/* Leaflet only applies className when a line is created, so the class is part of the key. */}
         {segments.map((s) => (
-          <Polyline key={s.key} positions={s.pts} pathOptions={{ className: s.cls, color: "#b89dff", weight: 3, interactive: false }} />
+          <Polyline key={`${s.key}|${s.cls}`} positions={s.pts} className={s.cls} color="#b89dff" weight={3} interactive={false} />
         ))}
 
         {FLOO_POINTS.filter((f) => f.map === mapId).map((f) => (
