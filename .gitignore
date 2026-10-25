@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+Thumbs.db
+.claude/
+
+# Never commit game files, saves or extracted game art
+*.sav
+saves/
+local-map/
